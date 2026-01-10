@@ -4,4 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "cookiecutter>=2.6.0",
+    "django>=6.0.1",
+    "django-tailwind>=4.4.2",
+    "honcho>=2.0.0",
+    "python-dotenv>=1.2.1",
+]
