@@ -46,11 +46,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'pwa',
     # My apps here vvv
+    'common',
+    'app',
     # My apps here ^^^
     "tailwind",
     TAILWIND_APP_NAME,
+    
+    'django_humanize',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ["django_browser_reload"]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -61,6 +70,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]
 
 ROOT_URLCONF = "mysite.urls"
 
@@ -143,3 +157,54 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+# Django-PWA configuration
+# https://github.com/silviolleite/django-pwa?tab=readme-ov-file#configuration
+
+PWA_APP_NAME = "StudentTrack"
+PWA_APP_DESCRIPTION = "Track your school routine with ease."
+PWA_APP_THEME_COLOR = "#1E2939"
+PWA_APP_BACKGROUND_COLOR = "#101828"
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_SCOPE = "/app/"
+PWA_APP_ORIENTATION = "any"
+PWA_APP_START_URL = "/app/"
+PWA_APP_DEBUG_MODE = DEBUG
+# PWA_APP_STATUS_BAR_COLOR = 'default'
+# PWA_APP_ICONS = [
+#     {
+#         'src': '/static/images/my_app_icon.png',
+#         'sizes': '160x160'
+#     }
+# ]
+# PWA_APP_ICONS_APPLE = [
+#     {
+#         'src': '/static/images/my_apple_icon.png',
+#         'sizes': '160x160'
+#     }
+# ]
+# PWA_APP_SPLASH_SCREEN = [
+#     {
+#         'src': '/static/images/icons/splash-640x1136.png',
+#         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+#     }
+# ]
+# PWA_APP_DIR = 'ltr'
+# PWA_APP_LANG = 'en-US'
+# PWA_APP_SHORTCUTS = [
+#     {
+#         'name': 'Shortcut',
+#         'url': '/target',
+#         'description': 'Shortcut to a page in my application'
+#     }
+# ]
+# PWA_APP_SCREENSHOTS = [
+#     {
+#       'src': '/static/images/icons/splash-750x1334.png',
+#       'sizes': '750x1334',
+#       "type": "image/png"
+#     }
+# ]
+
+
+USE_L10N = False
