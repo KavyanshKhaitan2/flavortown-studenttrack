@@ -152,6 +152,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = "login/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -166,9 +168,9 @@ PWA_APP_DESCRIPTION = "Track your school routine with ease."
 PWA_APP_THEME_COLOR = "#1E2939"
 PWA_APP_BACKGROUND_COLOR = "#101828"
 PWA_APP_DISPLAY = "standalone"
-PWA_APP_SCOPE = "/app/"
+PWA_APP_SCOPE = "/"
 PWA_APP_ORIENTATION = "any"
-PWA_APP_START_URL = "/app/"
+PWA_APP_START_URL = "/"
 PWA_APP_DEBUG_MODE = DEBUG
 # PWA_APP_STATUS_BAR_COLOR = 'default'
 # PWA_APP_ICONS = [
