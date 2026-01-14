@@ -8,6 +8,7 @@ dependencies = [
     "cookiecutter>=2.6.0",
     "django>=6.0.1",
     "django-browser-reload>=1.21.0",
+    "django-cotton>=2.6.0",
     "django-humanize>=0.1.2",
     "django-pwa>=2.0.1",
     "django-tailwind>=4.4.2",

@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     # My apps here ^^^
     "tailwind",
     TAILWIND_APP_NAME,
-    
+    'django_cotton',
     'django_humanize',
 ]
 

@@ -74,6 +74,27 @@
         </nav>
       {% endblock nav %}
       <div class="container px-4 mx-auto mt-4">
+        {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>
+                            {% if message.tags == 'info' %}
+                                <c-alert.info id="{{ forloop.counter }}">{{ message|safe }}</c-alert.info>
+                            {% elif message.tags == 'success' %}
+                                <c-alert.success id="{{ forloop.counter }}">{{ message|safe }}</c-alert.success>
+                            {% elif message.tags == 'warning' %}
+                                <c-alert.warning id="{{ forloop.counter }}">{{ message|safe }}</c-alert.warning>
+                            {% elif message.tags == 'error' %}
+                                <c-alert.danger id="{{ forloop.counter }}">{{ message|safe }}</c-alert.danger>
+                            {% elif message.tags == 'debug' %}
+                                <c-alert.debug id="{{ forloop.counter }}">{{ message|safe }}</c-alert.debug>
+                            {% else %}
+                                <c-alert.debug id="{{ forloop.counter }}">{{ message|safe }}</c-alert.debug>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         {% block content %}
           Use 'block content'
         {% endblock content %}

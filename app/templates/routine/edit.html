@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="font-bold text-4xl text-white mb-4">Edit routine</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="m-2 p-2 rounded-md bg-green-800">
+            <div>
+                <label for="schedule_width"
+                       class="block mb-2.5 text-sm font-medium text-heading">Number of periods</label>
+                <input type="number"
+                       name="schedule_width"
+                       id="schedule_width"
+                       class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                       placeholder="8"
+                       value="{{ schedule_width }}"
+                       required />
+            </div>
+        </div>
+        {% if user.scheduleslot_set %}
+            <div>
+                <h1 class="font-bold text-3xl text-white">Your routine</h1>
+                <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
+                    <table>
+                        <tr>
+                            <td></td>
+                            {% for _ in ''|center:schedule_width %}<th>{{ forloop.counter }}</th>{% endfor %}
+                        </tr>
+                        {% for _, row in schedule_grid.items %}
+                            <tr>
+                                <th class="text-right pr-1">{{ row.0.day|title }}</th>
+                                {% for slot in row %}
+                                    <td>
+                                            <input name="slot-value-PK-{{ slot.pk }}"
+                                                   value="{{ slot.subject }}"
+                                                   class="field-sizing-content border p-1 w-full text-center">
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <p>Hint: Change the 'number of periods' and hit update!</p>
+        {% endif %}
+        <button class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+            Update
+        </button>
+    </form>
+{% endblock content %}

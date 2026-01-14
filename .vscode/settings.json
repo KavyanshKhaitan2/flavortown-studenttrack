@@ -9,6 +9,6 @@
     "**/node_modules": true,
     "**/package*.json": true
   },
-  "djangoCotton.templatePaths": ["templates/cotton", "clinic/templates/cotton"],
+  "djangoCotton.templatePaths": ["templates/cotton", "app/templates/cotton"],
   "tailwindCSS.experimental.configFile": "tailwindcsstheme/static_src/src/styles.css"
 }
