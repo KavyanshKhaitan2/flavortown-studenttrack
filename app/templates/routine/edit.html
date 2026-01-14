@@ -16,10 +16,11 @@
                        required />
             </div>
         </div>
-        {% if user.scheduleslot_set %}
+        {% if user.scheduleslot_set.all %}
             <div>
                 <h1 class="font-bold text-3xl text-white">Your routine</h1>
                 <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
+                    <p>Note: These values are editable!</p>
                     <table>
                         <tr>
                             <td></td>

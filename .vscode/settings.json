@@ -2,7 +2,7 @@
   "python-envs.defaultEnvManager": "ms-python.python:system",
   "python-envs.pythonProjects": [],
   "files.exclude": {
-    ".venv": false,
+    ".venv": true,
     "**/__init__.py": true,
     "**/__pycache__": true,
     "tailwindcsstheme": false,

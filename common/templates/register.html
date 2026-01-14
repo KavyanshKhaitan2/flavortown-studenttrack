@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+  <form class="max-w-sm mx-auto" method="post">
+    <h1 class="font-bold underline text-3xl text-white mb-2.5 w-full text-center">Register</h1>
+    {% csrf_token %}
+    <div class="mb-5">
+      <label for="username" class="block text-sm font-medium text-heading">Username</label>
+      <input type="username"
+             id="username"
+             name="username"
+             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+             placeholder="exampleuser123"
+             required />
+    </div>
+    <div class="mb-5">
+      <label for="password" class="block text-sm font-medium text-heading">Password</label>
+      <input type="password"
+             id="password"
+             name="password"
+             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+             placeholder="••••••••"
+             required />
+    </div>
+    <button type="submit"
+            class="w-full text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+      Register
+    </button>
+  </form>
+  <div class="text-center">
+    <a href="{% url 'login' %}"
+       class="text-blue-500 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Already have an account? Login now.</a>
+  </div>
+{% endblock content %}
