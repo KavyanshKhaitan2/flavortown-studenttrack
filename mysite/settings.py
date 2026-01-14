@@ -46,15 +46,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'pwa',
+    "pwa",
     # My apps here vvv
-    'common',
-    'app',
+    "common",
+    "app",
     # My apps here ^^^
     "tailwind",
     TAILWIND_APP_NAME,
-    'django_cotton',
-    'django_humanize',
+    "django_cotton",
+    "django_humanize",
 ]
 
 if DEBUG:
@@ -63,6 +63,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -152,7 +153,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "login/"
 
 # Static files (CSS, JavaScript, Images)

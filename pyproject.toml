@@ -13,6 +13,8 @@ dependencies = [
     "django-pwa>=2.0.1",
     "django-tailwind>=4.4.2",
     "djlint>=1.36.4",
+    "gunicorn>=23.0.0",
     "honcho>=2.0.0",
     "python-dotenv>=1.2.1",
+    "whitenoise>=6.11.0",
 ]

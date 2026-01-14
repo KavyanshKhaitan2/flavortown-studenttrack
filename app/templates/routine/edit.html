@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h1 class="font-bold text-4xl text-white mb-4">Edit routine</h1>
-    <form method="post">
+    <form method="post" id="form">
         {% csrf_token %}
         <div class="m-2 p-2 rounded-md bg-green-800">
             <div>
@@ -15,6 +15,9 @@
                        value="{{ schedule_width }}"
                        required />
             </div>
+            <button class="mt-2.5 text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                Update
+            </button>
         </div>
         {% if user.scheduleslot_set.all %}
             <div>
@@ -26,14 +29,22 @@
                             <td></td>
                             {% for _ in ''|center:schedule_width %}<th>{{ forloop.counter }}</th>{% endfor %}
                         </tr>
-                        {% for _, row in schedule_grid.items %}
+                        {% for day, row in schedule_grid.items %}
                             <tr>
-                                <th class="text-right pr-1">{{ row.0.day|title }}</th>
+                                <th class="pr-1 text-left">
+                                    <input id="checkbox-{{ day }}"
+                                           type="checkbox"
+                                           name="checkbox-{{ day }}"
+                                           class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+                                    <label for="checkbox-{{ day }}">
+                                        {{ day|title }}
+                                    </label>
+                                </th>
                                 {% for slot in row %}
                                     <td>
-                                            <input name="slot-value-PK-{{ slot.pk }}"
-                                                   value="{{ slot.subject }}"
-                                                   class="field-sizing-content border p-1 w-full text-center">
+                                        <input name="slot-value-PK-{{ slot.pk }}"
+                                               value="{{ slot.subject }}"
+                                               class="min-w-30 field-sizing-content border p-1 w-full text-center">
                                     </td>
                                 {% endfor %}
                             </tr>
@@ -44,8 +55,25 @@
         {% else %}
             <p>Hint: Change the 'number of periods' and hit update!</p>
         {% endif %}
+        <input type="hidden" id="actionField" name="action" value="update">
         <button class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
             Update
+        </button>
+        <script>
+            function setActionAndSubmit(action) {
+                document.getElementById('actionField').value = action
+                document.getElementById('form').submit()
+            }
+        </script>
+        <button type="button"
+                onclick="setActionAndSubmit('delete')"
+                class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+            Delete selected days
+        </button>
+        <button type="button"
+                onclick="setActionAndSubmit('undelete')"
+                class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+            Undelete selected days
         </button>
     </form>
 {% endblock content %}
