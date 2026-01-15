@@ -30,7 +30,7 @@ if SECRET_KEY == default_secret:
     print("[WARN] SECRET is not set!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") in ['true', '1', 'True']
+DEBUG = os.environ.get("DEBUG") in ["true", "1", "True"]
 
 ALLOWED_HOSTS = ["stuenttrack.kavyansh.tech", ".kavyansh.tech", "localhost"]
 
@@ -164,6 +164,7 @@ LOGIN_URL = "login/"
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = "static/"
 
 # Django-PWA configuration
 # https://github.com/silviolleite/django-pwa?tab=readme-ov-file#configuration
