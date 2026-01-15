@@ -164,7 +164,7 @@ LOGIN_URL = "login/"
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles/"
+STATIC_ROOT = BASE_DIR / "static/"
 
 # Django-PWA configuration
 # https://github.com/silviolleite/django-pwa?tab=readme-ov-file#configuration
