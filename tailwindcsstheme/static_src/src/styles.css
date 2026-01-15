@@ -1,11 +1,13 @@
 @import "tailwindcss";
-@plugin "flowbite/plugin";
-@source "../../node_modules/flowbite";
 
 /* Flowbite theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "flowbite/src/themes/default";
 /* End Flowbite theme */
+
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files
