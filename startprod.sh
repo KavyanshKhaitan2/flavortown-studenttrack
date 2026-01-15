@@ -1,4 +1,2 @@
 # Starting production servers...
-uv run manage.py purgerequests 1 months
-
-uv run gunicorn mysite.wsgi:application
+uv run gunicorn --bind 0.0.0.0:8003 mysite.wsgi

@@ -1,41 +1,49 @@
 {% extends "base.html" %}
+{% load humanizelib %}
 {% block content %}
     <h1 class="font-bold text-4xl text-white mb-4">Welcome back, {{ user }}!</h1>
     <div>
-        <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
         <h1 class="font-bold text-3xl text-white">Your routine</h1>
+        <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
             {% if user.scheduleslot_set.all %}
-                    <table>
+                <table>
+                    <tr>
+                        <td></td>
+                        {% for _ in ''|center:schedule_width %}<th>{{ forloop.counter }}</th>{% endfor %}
+                    </tr>
+                    {% for _, row in schedule_grid.items %}
                         <tr>
-                            <td></td>
-                            {% for _ in ''|center:schedule_width %}<th>{{ forloop.counter }}</th>{% endfor %}
+                            <th class="text-right pr-1">{{ row.0.day|title }}</th>
+                            {% for slot in row %}<td class="min-w-30 text-center">{{ slot.subject }}</td>{% endfor %}
                         </tr>
-                        {% for _, row in schedule_grid.items %}
-                            <tr>
-                                <th class="text-right pr-1">{{ row.0.day|title }}</th>
-                                {% for slot in row %}
-                                    <td class="min-w-30 text-center">
-                                            {{ slot.subject }}
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </table>
-                    <a href="{% url 'routine.edit' %}">
-                        <button type="button"
-                        class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                    {% endfor %}
+                </table>
+                <a href="{% url 'routine.edit' %}">
+                    <button type="button"
+                            class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                         Edit routine
                     </button>
                 </a>
-                    {% else %}
-                    <p>We couldnt find your routine.</p>
-                    <a href="{% url 'routine.edit' %}">
-                        <button type="button"
-                        class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+            {% else %}
+                <p>We couldnt find your routine.</p>
+                <a href="{% url 'routine.edit' %}">
+                    <button type="button"
+                            class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                         Create one!
                     </button>
-            {% endif %}
-        </a>
+                {% endif %}
+            </a>
+        </div>
     </div>
-    </div>
+    {% comment %} <div>
+        <h1 class="font-bold text-3xl text-white">Stuff you need to do soon</h1>
+        <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
+            <h1 class="font-bold text-3xl text-white">History homework</h1>
+            <p class="text-white">Due date: 15 January 2026 (in {{ now|''|naturaldelta }})</p>
+            <p class="pl-1 border-l border-gray-600">
+                Do xyz abc bla bla bla
+            </p>
+
+        </div>
+    </div> {% endcomment %}
 {% endblock content %}

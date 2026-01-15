@@ -30,9 +30,13 @@ if SECRET_KEY == default_secret:
     print("[WARN] SECRET is not set!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG") in ['true', '1', 'True']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["stuenttrack.kavyansh.tech", ".kavyansh.tech", "localhost"]
+
+if DEBUG:
+    print("[WARN] Running in DEBUG mode.")
+    ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
