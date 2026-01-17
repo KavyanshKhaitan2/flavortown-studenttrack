@@ -79,7 +79,6 @@ class EditRoutineView(LoginRequiredMixin, View):
                     user=self.request.user,
                     day=day,
                     period=i,
-                    subject="[ placeholder ]",
                 )
         success(request, "Undeleted the selected days.")
 
@@ -97,7 +96,6 @@ class EditRoutineView(LoginRequiredMixin, View):
                         user=self.request.user,
                         day=day,
                         period=i,
-                        subject="[ placeholder ]",
                     )
             success(request, "Successfully increased schedule_width!")
         if schedule_width < context["schedule_width"]:

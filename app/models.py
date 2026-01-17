@@ -18,7 +18,7 @@ class ScheduleSlot(models.Model):
     }
     day = models.CharField(max_length=10, choices=DAY_CHOICES)
     period = models.PositiveIntegerField()
-    subject = models.CharField(max_length=200)
+    subject = models.CharField(max_length=200, default="[ placeholder ]")
 
     def get_display(self):
         return self.subject
