@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages import success, error, info
 from django.views import View
 from django.contrib.auth import get_user_model, login
-
+from app.models import ScheduleSlot
 User = get_user_model()
 
 # Create your views here.
@@ -32,4 +32,7 @@ class RegisterView(View):
         user = User.objects.create_user(username=provided_username, password=provided_password)
         login(request, user)
         success(request, "Registered account successfully!")
+        for day in ScheduleSlot.DAY_CHOICES:
+            for i in range(1, 7+1):
+                ScheduleSlot.objects.get_or_create(user=user, day=day, period=i)
         return redirect('dashboard')

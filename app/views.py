@@ -84,25 +84,25 @@ class EditRoutineView(LoginRequiredMixin, View):
 
     def updateAction(self, request):
         context = self.get_context_data()
-        schedule_width = request.POST["schedule_width"]
-        schedule_width = int(schedule_width)
-        if schedule_width < 0:
-            error(request, "Schedule width cannot be negative!")
-            return redirect(self.request.path_info)
-        if schedule_width > context["schedule_width"]:
-            for i in range(1, schedule_width + 1):
-                for day in ScheduleSlot.DAY_CHOICES:
-                    ScheduleSlot.objects.get_or_create(
-                        user=self.request.user,
-                        day=day,
-                        period=i,
-                    )
-            success(request, "Successfully increased schedule_width!")
-        if schedule_width < context["schedule_width"]:
-            for slot in ScheduleSlot.objects.filter(user=self.request.user):
-                if slot.period > schedule_width:
-                    slot.delete()
-            success(request, "Successfully decreased schedule_width!")
+        # schedule_width = request.POST["schedule_width"]
+        # schedule_width = int(schedule_width)
+        # if schedule_width < 0:
+        #     error(request, "Schedule width cannot be negative!")
+        #     return redirect(self.request.path_info)
+        # if schedule_width > context["schedule_width"]:
+        #     for i in range(1, schedule_width + 1):
+        #         for day in ScheduleSlot.DAY_CHOICES:
+        #             ScheduleSlot.objects.get_or_create(
+        #                 user=self.request.user,
+        #                 day=day,
+        #                 period=i,
+        #             )
+        #     success(request, "Successfully increased schedule_width!")
+        # if schedule_width < context["schedule_width"]:
+        #     for slot in ScheduleSlot.objects.filter(user=self.request.user):
+        #         if slot.period > schedule_width:
+        #             slot.delete()
+        #     success(request, "Successfully decreased schedule_width!")
         slot_pks = []
         for key in dict(request.POST).keys():
             if key.startswith("slot-value-PK-"):
@@ -134,9 +134,12 @@ class EditRoutineView(LoginRequiredMixin, View):
   
         schedule_width = context["schedule_width"]
         routine_delete_index = request.POST["routine-delete-index"]
+        schedule_grid = context['schedule_grid']
 
         if routine_delete_index == 'new':
             for day in ScheduleSlot.DAY_CHOICES:
+                if len(schedule_grid[day]) == 0:
+                    continue
                 ScheduleSlot.objects.get_or_create(
                     user=self.request.user,
                     day=day,
@@ -146,7 +149,9 @@ class EditRoutineView(LoginRequiredMixin, View):
             return
         
         routine_delete_index = int(routine_delete_index)
-        schedule_grid = context['schedule_grid']
+        if schedule_width == 1:
+            error(request, "Didnt delete; You would be without a schedule if we deleted this one!")
+            return
         for day in schedule_grid:
             row = schedule_grid[day]
             if len(row) == 0:
@@ -155,7 +160,8 @@ class EditRoutineView(LoginRequiredMixin, View):
                 slot,_ = ScheduleSlot.objects.get_or_create(user=request.user, day=day, period=i+1)
                 if i >= routine_delete_index:
                     if i < len(row)-1:
-                        slot.subject = row[i+1]
+                        slot.subject = row[i+1].subject
+                        slot.save()
                     if i == len(row)-1:
                         slot.delete()
         success(request, f"Deleted periods with index {routine_delete_index+1}.")
