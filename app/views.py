@@ -74,7 +74,7 @@ class EditRoutineView(LoginRequiredMixin, View):
             info(request, "Couldnt find any selected day.")
             return
         for day in days_to_undelete:
-            for i in range(1, context['schedule_width']+1):
+            for i in range(1, context["schedule_width"] + 1):
                 ScheduleSlot.objects.get_or_create(
                     user=self.request.user,
                     day=day,
@@ -109,7 +109,10 @@ class EditRoutineView(LoginRequiredMixin, View):
                 slot_pks.append(int(key.removeprefix("slot-value-PK-")))
         updated = False
         for pk in slot_pks:
-            slot = ScheduleSlot.objects.get(pk=pk)
+            slot = ScheduleSlot.objects.filter(pk=pk)
+            if len(slot) == 0:
+                continue
+            slot = slot[0]
             if slot.user != request.user:
                 error(
                     request,
@@ -125,6 +128,40 @@ class EditRoutineView(LoginRequiredMixin, View):
         if updated:
             success(request, "Updated routine successfully.")
 
+    def handle_routine_index_delete(self, request):
+        request = self.request
+        context = self.get_context_data()
+  
+        schedule_width = context["schedule_width"]
+        routine_delete_index = request.POST["routine-delete-index"]
+
+        if routine_delete_index == 'new':
+            for day in ScheduleSlot.DAY_CHOICES:
+                ScheduleSlot.objects.get_or_create(
+                    user=self.request.user,
+                    day=day,
+                    period=schedule_width+1,
+                )
+            success(request, "Created slots for new periods!")
+            return
+        
+        routine_delete_index = int(routine_delete_index)
+        schedule_grid = context['schedule_grid']
+        for day in schedule_grid:
+            row = schedule_grid[day]
+            if len(row) == 0:
+                continue
+            for i, _slot in enumerate(row):
+                slot,_ = ScheduleSlot.objects.get_or_create(user=request.user, day=day, period=i+1)
+                if i >= routine_delete_index:
+                    if i < len(row)-1:
+                        slot.subject = row[i+1]
+                    if i == len(row)-1:
+                        slot.delete()
+        success(request, f"Deleted periods with index {routine_delete_index+1}.")
+        
+        
+    
     def post(self, request):
         action = request.POST["action"]
         if action == "update":
@@ -133,4 +170,6 @@ class EditRoutineView(LoginRequiredMixin, View):
             self.deleteAction(request)
         if action == "undelete":
             self.undeleteAction(request)
+        if request.POST["routine-delete-index"] != 'null':
+            self.handle_routine_index_delete(request)
         return redirect(self.request.path_info)
