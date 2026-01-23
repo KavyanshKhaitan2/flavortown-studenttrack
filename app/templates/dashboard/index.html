@@ -35,15 +35,15 @@
             </a>
         </div>
     </div>
-    {% comment %} <div>
+    <div>
         <h1 class="font-bold text-3xl text-white">Stuff you need to do soon</h1>
         <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
             <h1 class="font-bold text-3xl text-white">History homework</h1>
-            <p class="text-white">Due date: 15 January 2026 (in {{ now|''|naturaldelta }})</p>
+            <p class="text-white">Due date: 15 January 2026 (in {{ "30 January 2026"|date|naturaldelta }})</p>
             <p class="pl-1 border-l border-gray-600">
                 Do xyz abc bla bla bla
             </p>
 
         </div>
-    </div> {% endcomment %}
+    </div>
 {% endblock content %}
