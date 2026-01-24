@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from datetime import date
 User = get_user_model()
 
 # Create your models here.
@@ -28,3 +28,14 @@ class ScheduleSlot(models.Model):
     
     class Meta:
         unique_together = ['user', 'day', 'period']
+
+class PendingWork(models.Model):
+    created = models.DateField(auto_now_add=True)
+    due = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField(max_length=2000, blank=True)
+    completed = models.BooleanField(default=False)
+    
+    def time_left(self):
+        return self.due - date.today()

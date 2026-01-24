@@ -13,8 +13,8 @@
                     </tr>
                     {% for _, row in schedule_grid.items %}
                         <tr>
-                            <th class="text-right pr-1">{{ row.0.day|title }}</th>
-                            {% for slot in row %}<td class="min-w-30 text-center">{{ slot.subject }}</td>{% endfor %}
+                            <th class="text-right lg:pr-1">{{ row.0.day|title }}</th>
+                            {% for slot in row %}<td class="lg:min-w-30 text-center">{{ slot.subject }}</td>{% endfor %}
                         </tr>
                     {% endfor %}
                 </table>
@@ -36,14 +36,54 @@
         </div>
     </div>
     <div>
-        <h1 class="font-bold text-3xl text-white">Stuff you need to do soon</h1>
-        <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
-            <h1 class="font-bold text-3xl text-white">History homework</h1>
-            <p class="text-white">Due date: 15 January 2026 (in {{ "30 January 2026"|date|naturaldelta }})</p>
-            <p class="pl-1 border-l border-gray-600">
-                Do xyz abc bla bla bla
-            </p>
-
+        <div class="flex">
+            <h1 class="me-5 font-bold text-3xl text-white">Pending works</h1>
+            <a href="{% url 'tasks.new' %}">
+                <button type="button"
+                        class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                    New
+                </button>
+            </a>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {% for work in pending_works %}
+                <div class="relative m-2 p-5 rounded-md bg-blue-800">
+                    <div class="absolute right-2 top-2">
+                        <form method="post" action="{% url 'tasks.action' work.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <button>
+                                <img title="Delete this period"
+                                     alt="delete period"
+                                     class="hover:bg-blue-500 rounded cursor-pointer w-6 inline-block"
+                                     src="https://icons.hackclub.com/api/icons/white/delete">
+                            </button>
+                        </form>
+                    </div>
+                    <h1 class="font-bold text-3xl text-white {% if work.completed %}line-through{% endif %}">{{ work.title }}</h1>
+                    <p class="text-white">
+                        Due date: {{ work.due }}
+                        {% if work.completed %}
+                            (completed)
+                        {% else %}
+                            (in {{ work.time_left|naturaldelta }})
+                        {% endif %}
+                    </p>
+                    <p class="pl-1 border-l-3 border-gray-600">Do xyz abc bla bla bla</p>
+                    <form method="post" action="{% url 'tasks.action' work.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="markComplete">
+                        <button type="submit"
+                                class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                            {% if work.completed %}
+                                Mark as incomplete
+                            {% else %}
+                                Mark as completed
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock content %}

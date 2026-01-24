@@ -4,7 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.contrib.messages import error, success, info
 from django.shortcuts import redirect
-from .models import ScheduleSlot
+from .models import ScheduleSlot, PendingWork
+from datetime import datetime
 
 
 # Create your views here.
@@ -18,6 +19,11 @@ class DashboardView(LoginRequiredMixin, View):
             schedule_grid[schedule.day].sort(key=lambda x: x.period)
         context["schedule_grid"] = schedule_grid
         grid_items = list(schedule_grid.items())
+
+        context["pending_works"] = PendingWork.objects.filter(
+            user=self.request.user
+        ).order_by("completed", "due")
+
         if len(grid_items) == 0:
             context["schedule_width"] = 0
         else:
@@ -83,7 +89,7 @@ class EditRoutineView(LoginRequiredMixin, View):
         success(request, "Undeleted the selected days.")
 
     def updateAction(self, request):
-        context = self.get_context_data()
+        # context = self.get_context_data()
         # schedule_width = request.POST["schedule_width"]
         # schedule_width = int(schedule_width)
         # if schedule_width < 0:
@@ -131,43 +137,46 @@ class EditRoutineView(LoginRequiredMixin, View):
     def handle_routine_index_delete(self, request):
         request = self.request
         context = self.get_context_data()
-  
+
         schedule_width = context["schedule_width"]
         routine_delete_index = request.POST["routine-delete-index"]
-        schedule_grid = context['schedule_grid']
+        schedule_grid = context["schedule_grid"]
 
-        if routine_delete_index == 'new':
+        if routine_delete_index == "new":
             for day in ScheduleSlot.DAY_CHOICES:
                 if len(schedule_grid[day]) == 0:
                     continue
                 ScheduleSlot.objects.get_or_create(
                     user=self.request.user,
                     day=day,
-                    period=schedule_width+1,
+                    period=schedule_width + 1,
                 )
             success(request, "Created slots for new periods!")
             return
-        
+
         routine_delete_index = int(routine_delete_index)
         if schedule_width == 1:
-            error(request, "Didnt delete; You would be without a schedule if we deleted this one!")
+            error(
+                request,
+                "Didnt delete; You would be without a schedule if we deleted this one!",
+            )
             return
         for day in schedule_grid:
             row = schedule_grid[day]
             if len(row) == 0:
                 continue
             for i, _slot in enumerate(row):
-                slot,_ = ScheduleSlot.objects.get_or_create(user=request.user, day=day, period=i+1)
+                slot, _ = ScheduleSlot.objects.get_or_create(
+                    user=request.user, day=day, period=i + 1
+                )
                 if i >= routine_delete_index:
-                    if i < len(row)-1:
-                        slot.subject = row[i+1].subject
+                    if i < len(row) - 1:
+                        slot.subject = row[i + 1].subject
                         slot.save()
-                    if i == len(row)-1:
+                    if i == len(row) - 1:
                         slot.delete()
         success(request, f"Deleted periods with index {routine_delete_index+1}.")
-        
-        
-    
+
     def post(self, request):
         action = request.POST["action"]
         if action == "update":
@@ -176,6 +185,44 @@ class EditRoutineView(LoginRequiredMixin, View):
             self.deleteAction(request)
         if action == "undelete":
             self.undeleteAction(request)
-        if request.POST["routine-delete-index"] != 'null':
+        if request.POST["routine-delete-index"] != "null":
             self.handle_routine_index_delete(request)
         return redirect(self.request.path_info)
+
+
+class NewTasksView(View):
+    def get(self, request):
+        return render(request, "dashboard/new_task.html")
+
+    def post(self, request):
+        title = request.POST["title"]
+        due = [int(x) for x in request.POST["due"].split("-")]
+        due = datetime(year=due[0], month=due[1], day=due[2])
+        description = request.POST.get("description", "")
+        work = PendingWork(
+            user=request.user, title=title, due=due, description=description
+        )
+        work.save()
+        success(request, "Success! Created new work.")
+        return redirect("dashboard")
+
+
+class TaskActionView(View):
+    def post(self, request, pk):
+        self.pk = pk
+        self.work = PendingWork.objects.get(user=request.user, pk=pk)
+        if request.POST['action'] == 'markComplete':
+            self.markComplete(request)
+        if request.POST['action'] == 'delete':
+            self.work.delete()
+            success(request, "Success! Deleted task.")
+        return redirect("dashboard")
+    def markComplete(self, request):
+        pk = self.pk
+        work = PendingWork.objects.get(user=request.user, pk=pk)
+        work.completed = not work.completed
+        work.save()
+        if work.completed:
+            success(request, "Success! Marked work as complete.")
+        else:
+            success(request, "Success! Marked work as incomplete.")

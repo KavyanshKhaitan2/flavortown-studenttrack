@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="font-bold text-4xl text-white mb-4">Create new pending work</h1>
+    <form method="post" id="form">
+        {% csrf_token %}
+        <div class="mb-5">
+            <label for="title" class="block text-sm font-medium text-heading">
+                Title (subject name, etc.) <span class="text-red-400" title="Required!">*</span>
+            </label>
+            <input type="text"
+                   id="title"
+                   name="title"
+                   class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                   placeholder="(eg. Maths Worksheet)"
+                   required />
+        </div>
+        <div class="mb-5">
+            <label for="due" class="block text-sm font-medium text-heading">
+                Due date <span class="text-red-400" title="Required!">*</span>
+            </label>
+            <input type="date"
+                   id="due"
+                   name="due"
+                   class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                   required />
+        </div>
+        <div class="mb-5">
+            <label for="description"
+                   class="block text-sm font-medium text-heading">Description</label>
+            <textarea id="description"
+                      name="description"
+                      rows="4"
+                      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body"
+                      placeholder="20 questions, etc. etc. (optional)"></textarea>
+        </div>
+        <button class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+            Create
+        </button>
+    </form>
+{% endblock content %}
