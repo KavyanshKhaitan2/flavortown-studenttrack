@@ -10,13 +10,13 @@ echo "[i] Migrating..."
 uv run manage.py migrate
 echo "[i] Done"
 echo
+#echo "[i] Deleting static..."
+#rm -r static/
+#echo "[i] Done"
+echo
 echo "[i] Building tailwindcss..."
 uv run manage.py tailwind install
 uv run manage.py tailwind build
-echo "[i] Done"
-echo
-echo "[i] Deleting static..."
-rm -r static/
 echo "[i] Done"
 echo
 echo "[i] Collecting static..."
