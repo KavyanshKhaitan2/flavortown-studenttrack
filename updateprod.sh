@@ -15,7 +15,6 @@ echo
 #echo "[i] Done"
 echo
 echo "[i] Building tailwindcss..."
-uv run manage.py tailwind install
 uv run manage.py tailwind build
 echo "[i] Done"
 echo
