@@ -4,7 +4,7 @@
     <h1 class="font-bold text-4xl text-white mb-4">Welcome back, {{ user }}!</h1>
     <div>
         <h1 class="font-bold text-3xl text-white">Your routine</h1>
-        <div class="m-2 p-2 rounded-md bg-blue-800 w-fit">
+        <div class="m-2 p-2 rounded-md bg-blue-800 overflow-x-scroll sm:overflow-x-auto md:w-min">
             {% if user.scheduleslot_set.all %}
                 <table>
                     <tr>
@@ -13,8 +13,8 @@
                     </tr>
                     {% for _, row in schedule_grid.items %}
                         <tr>
-                            <th class="text-right lg:pr-1">{{ row.0.day|title }}</th>
-                            {% for slot in row %}<td class="lg:min-w-30 text-center">{{ slot.subject }}</td>{% endfor %}
+                            <th class="text-right pr-1">{{ row.0.day|title }}</th>
+                            {% for slot in row %}<td class="p-0.5 lg:p-0 lg:min-w-30 text-center whitespace-nowrap">{{ slot.subject }}</td>{% endfor %}
                         </tr>
                     {% endfor %}
                 </table>
@@ -69,7 +69,7 @@
                             (in {{ work.time_left|naturaldelta }})
                         {% endif %}
                     </p>
-                    <p class="pl-1 border-l-3 border-gray-600">Do xyz abc bla bla bla</p>
+                    <p class="pl-1 border-l-3 border-gray-600">{{ work.description }}</p>
                     <form method="post" action="{% url 'tasks.action' work.pk %}">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="markComplete">

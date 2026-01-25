@@ -4,12 +4,20 @@ from django.contrib.messages import success, error, info
 from django.views import View
 from django.contrib.auth import get_user_model, login
 from app.models import ScheduleSlot
+from .models import DemoAccountCreds
 User = get_user_model()
 
 # Create your views here.
 
 class MyLoginView(LoginView):
     template_name = "login.html"
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['creds'], _ = DemoAccountCreds.objects.get_or_create()
+        return context
+    
 
 class MyLogoutView(LogoutView):
     def post(self, request, *args, **kwargs):

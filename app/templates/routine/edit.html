@@ -24,13 +24,13 @@
                                     <img title="Delete this period" alt="delete period" onclick="deletePeriod({{ forloop.counter0 }})" class="hover:bg-blue-500 rounded cursor-pointer w-6 inline-block" src="https://icons.hackclub.com/api/icons/white/delete">
                                 </th>
                             {% endfor %}
-                            <th>
+                            <th class="min-w-6">
                                 <img title="Add new period" alt="new period" onclick="deletePeriod('new')" class="hover:bg-blue-500 rounded cursor-pointer w-6 inline-block" src="https://icons.hackclub.com/api/icons/white/plus-fill">
                             </th>
                         </tr>
                         {% for day, row in schedule_grid.items %}
                             <tr>
-                                <th class="pr-1 text-left">
+                                <th class="pr-1 whitespace-nowrap text-left">
                                     <input id="checkbox-{{ day }}"
                                            type="checkbox"
                                            name="checkbox-{{ day }}"
@@ -41,7 +41,7 @@
                                     <td>
                                         <input name="slot-value-PK-{{ slot.pk }}"
                                                value="{{ slot.subject }}"
-                                               class="min-w-30 field-sizing-content border p-1 w-full text-center">
+                                               class="md:min-w-15 lg:min-w-30 field-sizing-content border p-1 w-full text-center">
                                     </td>
                                 {% endfor %}
                             </tr>

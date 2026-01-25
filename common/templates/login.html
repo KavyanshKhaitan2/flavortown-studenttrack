@@ -12,14 +12,31 @@
     {% endif %}
   <div class="mb-5">
     <label for="username" class="block text-sm font-medium text-heading">Username</label>
-    <input type="username" id="username" name="username" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="exampleuser123" required />
+    <input type="username" id="username" name="username" {% if creds.enabled %}value="{{ creds.username }}"{% endif %} class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="exampleuser123" required />
   </div>
   <div class="mb-5">
     <label for="password" class="block text-sm font-medium text-heading">Password</label>
-    <input type="password" id="password" name="password" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="••••••••" required />
+    <input type="password" id="password" name="password" {% if creds.enabled %}value="{{ creds.password }}"{% endif %} class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="••••••••" required />
   </div>
   <button type="submit" class="w-full text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Login</button>
 </form>
+{% if creds.enabled %}
+<p class="text-center mt-4 mx-2">
+  We have already set up a demo account for you!
+  The credentials have been auto-filled.
+  <table class="mx-auto **:p-1">
+    <tr>
+      <th>Username:</th>
+      <td>{{ creds.username }}</td>
+    </tr>
+    <tr>
+      <th>Password:</th>
+      <td>{{ creds.password }}</td>
+    </tr>
+  </table>
+</p>
+{% endif %}
+
 <div class="text-center">
   <a href="{% url 'register' %}" class="text-blue-500 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Dont have an account? Register now.</a>
 </div>
